@@ -3,26 +3,28 @@
     Private Const Zero As Integer = 0
     Dim Sec = 0
     Dim Min = 0
-    Dim SSec
-    Dim SMin
+    Dim SSec = 1
+    Dim SMin = 0
+    Dim J = 1
+    Dim xD = 59
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Sec -= 1
+        Sec -= J
         ReCon()
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Sec += 1
+        Sec += J
         ReCon()
     End Sub
 
     Public Sub ReCon()
         'Conitions of the Variables'
-        If Sec = 60 Then
+        If Sec > 59 Then
             Min += 1
-            Sec = 0
+            Sec = Sec - 60
         ElseIf Sec < 0 Then
             Min -= 1
-            Sec = 59
+            Sec = xD
         End If
 
         If Min < 0 Then
@@ -30,6 +32,9 @@
             Sec = 0
         ElseIf Min > 60 Then
             Min = 60
+            If Sec > 0 Then
+                Sec = 60
+            End If
         ElseIf Sec < 0 Then
             Sec = 0
         End If
@@ -66,5 +71,15 @@
         Min = SMin
         Sec = SSec
         ReCon()
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        J = 1
+        xD = 59
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        J = 60
+        xD = 0
     End Sub
 End Class
