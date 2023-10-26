@@ -1,6 +1,9 @@
-﻿Public Class Form1
+﻿Imports System.Threading
+
+Public Class Form1
     Private ReadOnly dataDirectory = AppDomain.CurrentDomain.BaseDirectory
     Private Const Zero As Integer = 0
+    Dim ms = 0
     Dim Sec = 0
     Dim Min = 0
     Dim SSec = 1
@@ -51,12 +54,33 @@
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         SMin = Min
         SSec = Sec
-        While Min > 0 Or Sec > 0
-            SSSS()
-            ReCon()
-            Slepp()
-        End While
-        My.Computer.Audio.Play(dataDirectory + "..\..\sounds\Zero.wav")
+        J = 1
+        xD = 59
+        ' Creamos un nuevo hilo para contar el tiempo
+        Dim thread As New Thread(Sub()
+                                     While Min > 0 Or Sec > 0
+                                         SSSS()
+
+                                         ' Actualizar la interfaz de usuario utilizando Invoke
+                                         Me.Invoke(Sub()
+                                                       ReCon()
+                                                   End Sub)
+
+                                         Slepp()
+                                     End While
+
+                                     ' Cuando termine, reproducir el sonido
+                                     Me.Invoke(Sub()
+                                                   My.Computer.Audio.Play(dataDirectory + "..\..\sounds\Zero.wav")
+                                               End Sub)
+                                 End Sub)
+
+        ' Iniciamos el hilo
+        thread.Start()
+        If ms = 1 Then
+            J = 60
+            xD = 0
+        End If
     End Sub
 
     Private Sub SSSS()
@@ -76,10 +100,12 @@
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         J = 1
         xD = 59
+        ms = 0
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         J = 60
         xD = 0
+        ms = 1
     End Sub
 End Class
